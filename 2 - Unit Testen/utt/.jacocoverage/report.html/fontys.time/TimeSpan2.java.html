@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>TimeSpan2.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;UnittestenTime&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">fontys.time</a> &gt; <span class="el_source">TimeSpan2.java</span></div><h1>TimeSpan2.java</h1><pre class="source lang-java linenums">package fontys.time;
+
+/**
+ * Created by linux on 29-9-15.
+ * @author Guus
+ */
+public class TimeSpan2 implements ITimeSpan{
+    private ITime bt;
+    private long duration;
+
+
+
+<span class="fc" id="L13">    public TimeSpan2(ITime bt,ITime et) {</span>
+<span class="fc bfc" id="L14" title="All 2 branches covered.">        if (bt.compareTo(et) &lt;= 0) {</span>
+<span class="fc" id="L15">            throw new IllegalArgumentException(&quot;begin time &quot;</span>
+                    + bt + &quot; must be earlier than end time &quot; + et);
+        }
+
+<span class="fc" id="L19">        this.bt = bt;</span>
+<span class="fc" id="L20">        this.duration = (bt.difference(et));</span>
+<span class="fc" id="L21">    }</span>
+    @Override
+    public ITime getBeginTime() {
+<span class="fc" id="L24">        return bt;</span>
+    }
+
+
+    @Override
+    public ITime getEndTime() {
+<span class="fc" id="L30">        return bt.plus((int)duration);</span>
+    }
+
+    @Override
+    public int length() {
+
+<span class="fc" id="L36">        return -(int)duration;</span>
+    }
+
+    @Override
+    public void setBeginTime(ITime beginTime) {
+<span class="fc bfc" id="L41" title="All 2 branches covered.">        if (beginTime.compareTo(bt.plus((int)duration)) &lt;= 0) {</span>
+<span class="fc" id="L42">            throw new IllegalArgumentException(&quot;begin time &quot;</span>
+<span class="fc" id="L43">                    + bt + &quot; must be earlier than end time &quot; + bt.plus((int)duration));</span>
+        }
+<span class="fc" id="L45">        bt = beginTime;</span>
+<span class="fc" id="L46">    }</span>
+
+    @Override
+    public void setEndTime(ITime endTime) {
+<span class="fc bfc" id="L50" title="All 2 branches covered.">        if (endTime.compareTo(bt) &gt; 0) {</span>
+<span class="fc" id="L51">            throw new IllegalArgumentException(&quot;end time &quot;</span>
+                    + duration + &quot; must be later then begin time &quot; + bt);
+        }
+
+<span class="fc" id="L55">        duration = bt.difference(endTime);</span>
+        //duration = endTime.compareTo(bt);
+<span class="fc" id="L57">    }</span>
+
+    @Override
+    public void move(int minutes) {
+<span class="fc" id="L61">        bt = bt.plus(minutes);</span>
+<span class="fc" id="L62">    }</span>
+
+    @Override
+    public void changeLengthWith(int minutes) {
+<span class="fc bfc" id="L66" title="All 2 branches covered.">        if (minutes &lt;= 0) {</span>
+<span class="fc" id="L67">            throw new IllegalArgumentException(&quot;length of period must be positive&quot;);</span>
+        }
+
+<span class="fc" id="L70">        duration += minutes;</span>
+<span class="fc" id="L71">    }</span>
+
+    @Override
+    public boolean isPartOf(ITimeSpan timeSpan) {
+<span class="pc bpc" id="L75" title="1 of 2 branches missed.">        return (getBeginTime().compareTo(timeSpan.getBeginTime()) &lt;= 0</span>
+<span class="pc bpc" id="L76" title="1 of 2 branches missed.">                &amp;&amp; getEndTime().compareTo(timeSpan.getEndTime()) &gt;= 0);</span>
+    }
+
+    @Override
+    public ITimeSpan unionWith(ITimeSpan timeSpan) {
+<span class="pc bpc" id="L81" title="1 of 4 branches missed.">        if (bt.compareTo(timeSpan.getEndTime()) &lt; 0 || bt.plus((int)duration).compareTo(timeSpan.getBeginTime()) &gt; 0) {</span>
+<span class="fc" id="L82">            return null;</span>
+        }
+
+        ITime begintime, endtime;
+<span class="fc bfc" id="L86" title="All 2 branches covered.">        if (bt.compareTo(timeSpan.getBeginTime()) &gt; 0) {</span>
+<span class="fc" id="L87">            begintime = bt;</span>
+        } else {
+<span class="fc" id="L89">            begintime = timeSpan.getBeginTime();</span>
+        }
+
+<span class="fc bfc" id="L92" title="All 2 branches covered.">        if (bt.plus((int)duration).compareTo(timeSpan.getEndTime()) &lt; 0) {</span>
+<span class="fc" id="L93">            endtime = bt.plus((int)duration);</span>
+        } else {
+<span class="fc" id="L95">            endtime = timeSpan.getEndTime();</span>
+        }
+
+<span class="fc" id="L98">        return new TimeSpan2(begintime, endtime);</span>
+
+    }
+
+    @Override
+    public ITimeSpan intersectionWith(ITimeSpan timeSpan) {
+
+        ITime begintime, endtime;
+<span class="fc bfc" id="L106" title="All 2 branches covered.">        if (bt.compareTo(timeSpan.getBeginTime()) &lt; 0) {</span>
+<span class="fc" id="L107">            begintime = bt;</span>
+        } else {
+<span class="fc" id="L109">            begintime = timeSpan.getBeginTime();</span>
+        }
+
+<span class="fc bfc" id="L112" title="All 2 branches covered.">        if (bt.plus((int)duration).compareTo(timeSpan.getEndTime()) &gt; 0) {</span>
+<span class="fc" id="L113">            endtime = bt.plus((int)duration);</span>
+        } else {
+<span class="fc" id="L115">            endtime = timeSpan.getEndTime();</span>
+        }
+
+<span class="fc bfc" id="L118" title="All 2 branches covered.">        if (begintime.compareTo(endtime) &lt;= 0) {</span>
+<span class="fc" id="L119">            return null;</span>
+        }
+
+<span class="fc" id="L122">        return new TimeSpan2(begintime, endtime);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>
