@@ -46,7 +46,6 @@ public class AEXBanner extends Application {
         primaryStage.show();
         primaryStage.toFront();
 
-        // Start animation: text moves from right to left
         animationTimer = new AnimationTimer() {
             private long prevUpdate;
 
@@ -54,7 +53,6 @@ public class AEXBanner extends Application {
             public void handle(long now) {
                 long lag = now - prevUpdate;
                 if (lag >= NANO_TICKS) {
-                    // calculate new location of text
                     textPosition -= TEXT_SPEED;
                     if (textPosition <= -textLength) {
                         textPosition = WIDTH;

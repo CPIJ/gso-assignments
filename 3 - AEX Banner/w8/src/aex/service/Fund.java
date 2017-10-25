@@ -6,10 +6,10 @@ import aex.shared.IFund;
  *
  * @author Ian
  */
-public class Fund implements IFund {
+public final class Fund implements IFund {
     
-    private String name;
-    private double exchange;
+    private final String name;
+    private final double exchange;
     
     public Fund(String name, double exchange){
         this.name = name;

@@ -10,7 +10,7 @@ import java.rmi.registry.Registry;
  */
 public class Main {
 
-    private static final int PORT = 1337;
+    private static final int PORT = 1234;
     private static final String STOCK_EXCHANGE = "StockExchange";
     private static Registry registry;
 

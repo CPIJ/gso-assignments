@@ -14,7 +14,7 @@ public class BannerController {
     private Timer pollingTimer;
     private Registry registry;
 
-    private static final int PORT = 1337;
+    private static final int PORT = 1234;
     private static final String STOCK_EXCHANGE = "StockExchange";
     private static final int UPDATE_TIME = 2000;
     private static final int STARTUP_TIME = 0;
